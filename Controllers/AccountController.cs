@@ -45,7 +45,7 @@ namespace TicketApplication.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> Signup([FromBody] User model)
+        public async Task<IActionResult> Signup([FromBody] SignupDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +70,8 @@ namespace TicketApplication.Controllers
                 FullName = model.FullName,
                 Email = model.Email,
                 Password = model.Password,
-                Role = "User"
+                Role = "User",
+                Token = " "
             };
             _context.UserTable.Add(newUser);
             await _context.SaveChangesAsync();
@@ -95,9 +96,7 @@ namespace TicketApplication.Controllers
             var key = Encoding.ASCII.GetBytes("veryverysecret.....");
             var identity = new ClaimsIdentity(new Claim[]
             {
-                new Claim("UserID", user.UserID.ToString()),
-
-
+                new Claim(ClaimTypes.NameIdentifier,user.UserID.ToString())
             });
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256);
             var tokenDescriptor = new SecurityTokenDescriptor

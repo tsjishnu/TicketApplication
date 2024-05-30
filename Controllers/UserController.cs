@@ -63,7 +63,7 @@ namespace TicketApplication.Controllers
             var userTickets = await _context.OrderTable
                 .Where(o => o.UserID == userId)
                 .Include(o => o.Match) // Include the Match details
-                .OrderBy(o => o.Match.MatchDate) // Sort by match date
+                .OrderBy(o => o.Match.MatchDate) 
                 .Select(o => new UserTickets
                 {
                     Match = o.Match,
